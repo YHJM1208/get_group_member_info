@@ -133,6 +133,28 @@ def _split_args(text: str) -> list[str]:
         return text.split()
 
 
+def _member_compact_line(
+    m: GroupMember, conditions: dict[str, str]
+) -> str:
+    """默认精简列表：查询了什么字段就展示什么字段。"""
+    if conditions:
+        details = []
+        for key in conditions:
+            if key == "user_id":
+                continue
+            value = getattr(m, key, "")
+            if value is None:
+                value = ""
+            if key == "card" and not value:
+                value = "无"
+            details.append(f"{key}={value}")
+        detail_text = " ".join(details)
+    else:
+        detail_text = f"sex={m.sex} role={m.role}"
+    line = f"{m.user_id} {m.card or m.nickname}"
+    return f"{line} ({detail_text})" if detail_text else line
+
+
 async def _record_event(
     group_id: int,
     user_id: int,
@@ -691,11 +713,7 @@ async def _(bot: Bot, event: GroupMessageEvent, args: Message = CommandArg()):
             for m in members
         ]
     else:
-        lines = [
-            f"{m.user_id} {m.card or m.nickname} "
-            f"(sex={m.sex} role={m.role})"
-            for m in members
-        ]
+        lines = [_member_compact_line(m, conditions) for m in members]
 
     header = f"条件 [{cond_desc}] 共 {len(members)} 人"
     if len(members) >= display_limit:
