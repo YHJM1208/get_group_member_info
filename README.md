@@ -480,5 +480,5 @@ if "nonebot_plugin_apscheduler" not in sys.modules:
 
 范围写法通用：`>N`、`>=N`、`<N`、`<=N`、`N-M`、`N~M`，也支持 `field>N` 简写和全角符号。
 
-## License
+## LICEMSE
 MIT
