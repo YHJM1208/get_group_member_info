@@ -161,6 +161,8 @@ Succeeded to load plugin "get_group_member_info"
 /成员查询 nickname=小 count limit=20
 ```
 
+默认精简列表只展示本次查询涉及的字段：例如 `level=>=90` 会显示每个人的 `level`，不再固定显示 `sex`/`role`；没有条件时仍显示 `sex`/`role`。使用 `all` 时仍输出全部字段。
+
 ### 3. `/事件查询`
 
 ```text
